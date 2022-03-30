@@ -2,7 +2,13 @@ const connection = require('../connection');
 
 const getSalesById = async (id) => {
   try {
-    const [sale] = await connection.execute('SELECT * FROM StoreManager.sales WHERE id = ?', [id]);
+    const query = `SELECT sales.date, sales_product.product_id, sales_product.quantity
+    FROM StoreManager.sales AS sales
+    INNER JOIN StoreManager.sales_products AS sales_product
+    ON sales.id = sales_product.sale_id
+    WHERE sales.id = ?
+    ORDER BY sale_id, product_id;`;
+    const [sale] = await connection.execute(query, [id]);
     if (sale.length === 0) return console.log('Sale not found');
     return sale[0];    
   } catch (err) {
