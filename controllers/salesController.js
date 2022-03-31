@@ -10,14 +10,16 @@ const getAllSales = async (req, res) => {
 };
 
 const getSalesById = async (req, res) => {
-  const { id } = req.params;
   try {
+    const { id } = req.params;
     const sale = await salesService.getById(id);
+    if (!sale) return res.status(404).json({ message: 'Sale not found' });
     return res.status(200).json(sale);
   } catch (error) {
     console.error(error);
   }
 };
+getSalesById();
 
 module.exports = {
   getAllSales,

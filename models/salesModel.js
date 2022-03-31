@@ -14,8 +14,9 @@ const getAllSales = async () => {
     FROM StoreManager.sales AS sales
     INNER JOIN StoreManager.sales_products AS sales_products
     ON sales.id = sales_products.sale_id
-    ORDER BY sales.id, sales_products.product_id;`;
+    ORDER BY sales.id;`;
     const [sales] = await connection.execute(query);
+    if (!sales || sales.length === 0) return null;
     console.log('Request successful');
     return sales.map(changeToCamelCase);   
   } catch (err) {
@@ -30,8 +31,10 @@ const getSalesById = async (id) => {
     INNER JOIN StoreManager.sales_products AS sales_product
     ON sales.id = sales_product.sale_id
     WHERE sales.id = ?
-    ORDER BY sale_id, product_id;`;
+    ORDER BY sale_id;`;
     const [sale] = await connection.execute(query, [id]);
+    if (!sale || sale.length === 0) return null;
+    console.log(sale);
     return sale.map(changeToCamelCase);  
   } catch (err) {
     console.error(err);
