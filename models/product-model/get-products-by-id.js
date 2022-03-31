@@ -3,9 +3,8 @@ const connection = require('../connection');
 const getProductsById = async (id) => {
   try {
     const [product] = await connection.execute(
-      'SELECT * FROM StoreManager.products WHERE id = ?', [id],
+      'SELECT * FROM StoreManager.products WHERE id = ? ORDER BY id', [id],
     );
-    if (product.length === 0) return console.log('Product not found');
     return product[0];
   } catch (err) {
     console.error(err);

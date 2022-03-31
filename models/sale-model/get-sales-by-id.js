@@ -9,7 +9,6 @@ const getSalesById = async (id) => {
     WHERE sales.id = ?
     ORDER BY sale_id, product_id;`;
     const [sale] = await connection.execute(query, [id]);
-    if (sale.length === 0) return console.log('Sale not found');
     return sale[0];    
   } catch (err) {
     console.error(err);
