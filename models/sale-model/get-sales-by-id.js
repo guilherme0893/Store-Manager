@@ -1,5 +1,12 @@
 const connection = require('../connection');
 
+const changeToCamelCase = ({ sale_id: saleId, date, product_id: productId, quantity }) => ({
+  saleId,
+  date,
+  productId,
+  quantity,
+});
+
 const getSalesById = async (id) => {
   try {
     const query = `SELECT sales.date, sales_product.product_id, sales_product.quantity
@@ -9,7 +16,7 @@ const getSalesById = async (id) => {
     WHERE sales.id = ?
     ORDER BY sale_id, product_id;`;
     const [sale] = await connection.execute(query, [id]);
-    return sale[0];    
+    return sale.map(changeToCamelCase);  
   } catch (err) {
     console.error(err);
   }
