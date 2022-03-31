@@ -19,7 +19,6 @@ const getSalesById = async (req, res) => {
     console.error(error);
   }
 };
-getSalesById();
 
 module.exports = {
   getAllSales,
