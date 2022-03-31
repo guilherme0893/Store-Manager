@@ -1,11 +1,10 @@
 const express = require('express');
 
-const getAllSales = require('../controllers/sale-controller/get-all-sales');
-const getSalesById = require('../controllers/sale-controller/get-sales-by-id');
+const salesController = require('../controllers/salesController');
 
 const router = express.Router();
 
-router.get('/', getAllSales);
-router.get('/:id', getSalesById);
+router.get('/', salesController.getAllSales);
+router.get('/:id', salesController.getSalesById);
 
 module.exports = router;
