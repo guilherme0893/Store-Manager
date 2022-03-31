@@ -34,7 +34,7 @@ const getSalesById = async (id) => {
     ORDER BY sale_id;`;
     const [sale] = await connection.execute(query, [id]);
     if (!sale || sale.length === 0) return null;
-    console.log(sale);
+    // console.log(sale);
     return sale.map(changeToCamelCase);  
   } catch (err) {
     console.error(err);
