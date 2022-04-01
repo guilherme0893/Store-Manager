@@ -11,7 +11,7 @@
 //   if (name.length < 5) {
 //     return res.status(422).json({ message: '"name" length must be at least 5 characters long' });
 //   }}
-const productService = require('../services/productsServices');
+const productsModel = require('../models/productsModel');
 
 const nameValidation = (req, res, next) => {
   const { name } = req.body;
@@ -37,15 +37,16 @@ const quantityValidation = (req, res, next) => {
 };
 
 const checkProduct = async (req, res, next) => {
-  try {
-    const { name } = req.body;
-    const check = await productService.getUniqueProduct(name);
-    if (check) {
-      return res.status(409).json({ message: 'Product already exists' });
-    }
-  } catch (error) {
-    console.error(error);    
-  }
+  const { name } = req.body;
+  const products = await productsModel.getAllProducts();
+  const finder = products.find((product) => product.name === name);
+  if (finder) return res.status(409).json({ message: 'Product already exists' });
+  // // try {
+  //   const product = await productService.getAll();
+  //   if (product) 
+  // // } catch (error) {
+  // //   console.error(error);    
+  // // }
   return next();
 };
 

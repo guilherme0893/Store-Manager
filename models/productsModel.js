@@ -18,34 +18,24 @@ const getProductsById = async (id) => {
   }
 };
 
-// chama um product X do database para checagem
-const getUniqueProduct = async (name) => {
-  const query = 'SELECT * FROM products WHERE name = ?';
-  const [product] = await connection.execute(query, [name]);
-  // console.log(name);
-  // console.log(product); // vazio no começo!
-  return product;
-};
-// getUniqueProduct('guilherme'); // traz todos
+// // chama um product X do database para checagem
+// const getUniqueProduct = async (name) => {
+//   const query = 'SELECT * FROM products WHERE name = ?';
+//   const [product] = await connection.execute(query, [name]);
+//   // console.log(name);
+//   // console.log(product); // vazio no começo!
+//   return product;
+// };
 
 const createProduct = async ({ name, quantity }) => {
-  // try {
     const query = 'INSERT INTO products (name, quantity) VALUES (?,?)';
-    // [{ }] porque vem na inserção -- rever aula para confirmar 100%
     const [insertId] = await connection.execute(query, [name, quantity]);
-    // console.log(name);
-    // console.log(quantity);
-    // console.log(insertId);
     return {
       id: insertId,
       name,
       quantity,
     };
-  // } catch (error) {
-  //   console.error('error');  
-  // }
 };
-// createProduct({ name: 'guilherme', quantity: 7 });
 
 const updateProduct = async ({ id, name, quantity }) => {
   // !!! updateProduct com um determinado id!!
@@ -66,7 +56,7 @@ module.exports = {
   getProductsById,
   getAllProducts,
   createProduct,
-  getUniqueProduct,
+  // getUniqueProduct,
   updateProduct,
   deleteProduct,
 };

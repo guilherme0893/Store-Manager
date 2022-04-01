@@ -1,5 +1,4 @@
 const productService = require('../services/productsServices');
-// const productModel = require('../models/productsModel');
 
 const getAllProducts = async (req, res) => {
   try {
@@ -30,20 +29,19 @@ const getProductsById = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-  try {
-    console.log('antes do req.body');
-    const { name, quantity } = req.body;
-    const product = await productService.createProduct({ name, quantity });
-    // console.log(product, 'oi');
-    return res.status(201).json(product);
-  } catch (error) {
-    console.error(error);    
-  }
+  const { name, quantity } = req.body;
+  const newProduct = await productService.createProduct({ name, quantity });
+  return res.status(201).json(newProduct);  
+  // if (product === undefined) {
+  // } 
+  // if (product === true) {
+  //   return res.status(409).json({ message: 'Product already exists' });
+  // }   
 };
 
 const updateProduct = async (req, res) => {
   const { id } = req.params;
-  console.log(id, 'id do update');
+  // console.log(id, 'id do update');
   const { name, quantity } = req.body;
   const product = await productService.getById(id);
   if (!product) return res.status(404).json({ message: 'Product not found' });
