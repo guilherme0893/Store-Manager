@@ -1,3 +1,4 @@
+const connection = require('../models/connection');
 const productsModel = require('../models/productsModel');
 
 const getAll = async () => {
@@ -37,10 +38,19 @@ const updateProduct = async ({ id, name, quantity }) => {
   }
 };
 
+const deleteProduct = async (id) => {
+  try {
+    return await productsModel.deleteProduct(id);    
+  } catch (error) {
+    console.error(error);    
+  }
+};
+
 module.exports = {
   getAll,
   getById,
   createProduct,
   getUniqueProduct,
   updateProduct,
+  deleteProduct,
 };
