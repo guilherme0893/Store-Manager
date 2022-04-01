@@ -2,6 +2,7 @@ const frisby = require("frisby");
 require("dotenv").config();
 
 describe("03-validations", () => {
+	
   const url = `http://localhost:${process.env.PORT}`;
 
   describe("3 - Realiza validações nos produtos e nas vendas", () => {

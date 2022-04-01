@@ -1,5 +1,5 @@
 const productService = require('../services/productsServices');
-// const productsValidation = require('../middlewares/productsMiddleware');
+// const productModel = require('../models/productsModel');
 
 const getAllProducts = async (req, res) => {
   try {
@@ -28,7 +28,20 @@ const getProductsById = async (req, res) => {
   }
 };
 
+const createProduct = async (req, res) => {
+  try {
+    console.log('antes do req.body');
+    const { name, quantity } = req.body;
+    const product = await productService.createProduct({ name, quantity });
+    // console.log(product, 'oi');
+    return res.status(201).json(product);
+  } catch (error) {
+    console.error(error);    
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProductsById,
+  createProduct,
 };

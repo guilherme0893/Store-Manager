@@ -17,7 +17,7 @@ const getAllSales = async () => {
     ORDER BY sales.id;`;
     const [sales] = await connection.execute(query);
     if (!sales || sales.length === 0) return null;
-    console.log('Request successful');
+    // console.log('Request successful');
     return sales.map(changeToCamelCase);   
   } catch (err) {
     console.error(err);    

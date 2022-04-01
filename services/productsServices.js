@@ -10,15 +10,18 @@ const getById = async (id) => {
   return product;
 };
 
-const createProduct = async (product) => {
+const getUniqueProduct = async (name) => {
+  const products = await productsModel.getAllProducts();
+  // console.log(products, 'sou o products');
+  const finder = products.find((product) => product.name === name);
+  // console.log(finder);
+  return !finder;
+};
+getUniqueProduct('guilherme');
+
+const createProduct = async ({ name, quantity }) => {
   try {
-    const { name } = product;
-    // baseado na codigo o Guima
-    const checkProduct = await productsModel.checkProduct(name);
-    if (checkProduct) {
-      return { message: 'Product already exists' };
-    }
-    const newProduct = await productsModel.createProduct(product);
+    const newProduct = await productsModel.createProduct(name, quantity);
     return newProduct;    
   } catch (error) {
     console.error(error);    
@@ -29,4 +32,5 @@ module.exports = {
   getAll,
   getById,
   createProduct,
+  getUniqueProduct,
 };

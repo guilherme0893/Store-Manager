@@ -11,6 +11,7 @@
 //   if (name.length < 5) {
 //     return res.status(422).json({ message: '"name" length must be at least 5 characters long' });
 //   }}
+const productService = require('../services/productsServices');
 
 const nameValidation = async (req, res, next) => {
   const { name } = req.body;
@@ -22,7 +23,6 @@ const nameValidation = async (req, res, next) => {
   }
   next();
 };
-// nameValidation();
 
 const quantityValidation = async (req, res, next) => {
   const { quantity } = req.body;
@@ -35,7 +35,21 @@ const quantityValidation = async (req, res, next) => {
   next();
 };
 
+const checkProduct = async (req, res, next) => {
+  try {
+    const { name } = req.body;
+    const check = await productService.getUniqueProduct(name);
+    if (check) {
+      return res.status(409).json({ message: 'Product already exists' });
+    }
+  } catch (error) {
+    console.error(error);    
+  }
+  return next();
+};
+
 module.exports = {
   nameValidation,
   quantityValidation,
+  checkProduct,
 };
