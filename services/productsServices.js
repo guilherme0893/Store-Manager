@@ -1,4 +1,3 @@
-const connection = require('../models/connection');
 const productsModel = require('../models/productsModel');
 
 const getAll = async () => {
