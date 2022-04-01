@@ -13,6 +13,7 @@ const getAllProducts = async (req, res) => {
 const getProductsById = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id, 'id do getById');
     // const { name, quantity } = req.body;
     // // validations
     // const nameCheck = productsValidation.nameValidation(name);
@@ -40,8 +41,24 @@ const createProduct = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  console.log(id, 'id do update');
+  const { name, quantity } = req.body;
+  const product = await productService.getById(id);
+  if (!product) return res.status(404).json({ message: 'Product not found' });
+  try {
+    // falta o await
+    const updatedProduct = await productService.updateProduct({ id, name, quantity });
+    return res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error(error);    
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProductsById,
   createProduct,
+  updateProduct,
 };

@@ -2,7 +2,7 @@ const connection = require('./connection');
 
 const getAllProducts = async () => {
   try {
-    const [products] = await connection.execute('SELECT * FROM StoreManager.products');
+    const [products] = await connection.execute('SELECT * FROM products');
     return products;    
   } catch (err) {
     console.error(err);
@@ -11,10 +11,8 @@ const getAllProducts = async () => {
 
 const getProductsById = async (id) => {
   try {
-    const [product] = await connection.execute(
-      'SELECT * FROM StoreManager.products WHERE id = ? ORDER BY id', [id],
-    );
-    return product[0];
+    const [product] = await connection.execute('SELECT * FROM products WHERE id = ?', [id]);
+    return product;
   } catch (err) {
     console.error(err);
   }
@@ -22,38 +20,49 @@ const getProductsById = async (id) => {
 
 // chama um product X do database para checagem
 const getUniqueProduct = async (name) => {
-  const query = 'SELECT * FROM StoreManager.products WHERE name = ?';
+  const query = 'SELECT * FROM products WHERE name = ?';
   const [product] = await connection.execute(query, [name]);
-  console.log(name);
-  console.log(product); // vazio no começo!
+  // console.log(name);
+  // console.log(product); // vazio no começo!
   return product;
 };
-getUniqueProduct('guilherme'); // traz todos
+// getUniqueProduct('guilherme'); // traz todos
 
 const createProduct = async ({ name, quantity }) => {
   // try {
-    const query = 'INSERT INTO StoreManager.products (name, quantity) VALUES (?,?)';
+    const query = 'INSERT INTO products (name, quantity) VALUES (?,?)';
     // [{ }] porque vem na inserção -- rever aula para confirmar 100%
-    const [{ insertId }] = await connection.execute(query, [name, quantity]);
-    console.log(name);
-    console.log(quantity);
-    console.log(insertId);
-    const productObj = {
+    const [insertId] = await connection.execute(query, [name, quantity]);
+    // console.log(name);
+    // console.log(quantity);
+    // console.log(insertId);
+    return {
       id: insertId,
       name,
       quantity,
     };
-    console.log(productObj);
-    return productObj;
   // } catch (error) {
   //   console.error('error');  
   // }
 };
-createProduct({ name: 'guilherme', quantity: 7 });
+// createProduct({ name: 'guilherme', quantity: 7 });
+
+const updateProduct = async ({ id, name, quantity }) => {
+  // !!! updateProduct com um determinado id!!
+  const query = 'UPDATE products SET name = ?, quantity = ? WHERE id = ?';
+  await connection.execute(query, [name, quantity, id]);
+  // return product; // tava retornando algo que nao havia
+  return {
+    id,
+    name,
+    quantity,
+  };
+};
 
 module.exports = {
   getProductsById,
   getAllProducts,
   createProduct,
   getUniqueProduct,
+  updateProduct,
 };

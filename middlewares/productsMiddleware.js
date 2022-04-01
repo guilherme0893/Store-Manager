@@ -13,7 +13,7 @@
 //   }}
 const productService = require('../services/productsServices');
 
-const nameValidation = async (req, res, next) => {
+const nameValidation = (req, res, next) => {
   const { name } = req.body;
   if (!name) {
     return res.status(400).json({ message: '"name" is required' });
@@ -21,18 +21,19 @@ const nameValidation = async (req, res, next) => {
   if (name.length <= 5) {
     return res.status(422).json({ message: '"name" length must be at least 5 characters long' });
   }
-  next();
+  return next();
 };
 
-const quantityValidation = async (req, res, next) => {
+const quantityValidation = (req, res, next) => {
   const { quantity } = req.body;
+  console.log(quantity, 'sou a quantidade');
   if (!quantity && quantity !== 0) {
     return res.status(400).json({ message: '"quantity" is required' });
   }
-  if (quantity <= 1) {
+  if (quantity < 1) {
     return res.status(422).json({ message: '"quantity" must be greater than or equal to 1' });
   }
-  next();
+  return next();
 };
 
 const checkProduct = async (req, res, next) => {
