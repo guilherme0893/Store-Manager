@@ -59,10 +59,15 @@ const createNewSale = async (sales) => {
   return newSale;
 };
 
-const updateSale = async (sales) => {
-  const query = 'UPDATE products SET productId = ?, quantity = ? WHERE id = ?';
-  const updatedSale = await connection.execute(query, [sales.productId, sales.quantity]);
-  return updatedSale;
+const updateSale = async (saleId, sales) => {
+  const query = `UPDATE sales_products SET product_id = ?, 
+    quantity = ? WHERE sale_id = ? AND product_id = ?`;
+  // de novo inserção de diferentes dados cria promises
+  const itemUpdated = await Promise.all(sales.map(async ({ productId, quantity }) => {
+    await connection.execute(query, [productId, quantity, saleId, productId]);
+    return { productId, quantity };
+  }));
+  return { saleId, itemUpdated };
 };
 
 module.exports = {
