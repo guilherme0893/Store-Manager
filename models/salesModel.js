@@ -41,16 +41,22 @@ const getSalesById = async (id) => {
   }
 };
 
-const createNewSale = async (sale) => {
+const newSaleId = async () => {
   const query = 'INSERT INTO sales (date) VALUES(NOW())';
-  const [{ insertId }] = await connection.execute(query);
-  const newQuery = 'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?,?,?)';
-  sale.map(async (venda) => {
-    // o map de valores gera promisses
-    const newSale = connection.execute(newQuery, [insertId, venda.productId, venda.quantity]);
-    // resolve as promessas
-    return Promise.all(newSale);
-  });
+  const [newId] = await connection.execute(query);
+  return newId.insertId;
+};
+
+const createNewSale = async (sales) => {
+  const id = await newSaleId();
+  // o map de valores gerará promises -- graças ao video do Ricci
+  const newSale = await Promise.all(sales.map(async (sale) => {
+    const newQuery = 'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?,?,?)';
+    const salePromise = await connection.execute(newQuery, 
+      [id, sale.productId, sale.quantity]);
+    return salePromise;
+  }));
+  return newSale;
 };
 
 module.exports = {

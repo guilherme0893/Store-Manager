@@ -1,5 +1,6 @@
 const productIdValidation = async (req, res, next) => {
   const [{ productId }] = req.body;
+  // console.log(typeof productId, 'sou o productId');
   if (!productId) {
     return res.status(400).json({ message: '"productId" is required' });
   }
