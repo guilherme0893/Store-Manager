@@ -34,7 +34,7 @@ const getUniqueProduct = async (name) => {
 const createProduct = async ({ name, quantity }) => {
   try {
     const query = 'INSERT INTO products (name, quantity) VALUES (?,?)';
-    const [insertId] = await connection.execute(query, [name, quantity]);
+    const [{ insertId }] = await connection.execute(query, [name, quantity]);
     return {
       id: insertId,
       name,
