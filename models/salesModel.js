@@ -47,7 +47,7 @@ const newSaleId = async () => {
   return insertId;
 };
 
-const createNewSale = async (sales) => {
+const createNewSale = async (sales) => { // talvez possa ser adaptada para ficar similar ao updateSale -- geração do json nas camadas superiores
   const id = await newSaleId();
   // o map de valores gerará promises -- graças ao video do Ricci
   const newSale = await Promise.all(sales.map(async (sale) => {
@@ -67,7 +67,7 @@ const updateSale = async (saleId, sales) => {
     await connection.execute(query, [productId, quantity, saleId, productId]);
     // console.log(newPromise, 'eu sou a newPromise'); // undefined
     // console.log(newPromise.productId, 'eu sou o productId'); // também undefined
-    console.log(productId, 'eu sou o productId'); // retorna um valor
+    // console.log(productId, 'eu sou o productId'); // retorna um valor
     return { productId, quantity };
   }));
   // ambos tem valores definidos

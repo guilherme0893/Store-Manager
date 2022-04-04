@@ -12,7 +12,7 @@ const getAllProducts = async (req, res) => {
 const getProductsById = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id, 'id do getById');
+    // console.log(id, 'id do getById');
     // const { name, quantity } = req.body;
     // // validations
     // const nameCheck = productsValidation.nameValidation(name);
