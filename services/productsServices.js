@@ -1,18 +1,31 @@
 const productsModel = require('../models/productsModel');
 
 const getAll = async () => {
-  const products = await productsModel.getAllProducts();
-  return products;
+  try {
+    const products = await productsModel.getAllProducts();
+    return products;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const getById = async (id) => {
-  const [product] = await productsModel.getProductsById(id);
-  return product;
+  try {
+    const [product] = await productsModel.getProductsById(id);
+    return product;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const createProduct = async ({ name, quantity }) => {
-  const newProduct = productsModel.createProduct({ name, quantity });
-  return newProduct;
+  try {
+    // repensar se não valeria a chamar o getUnique aqui e throw um error para o proximo catch
+    const newProduct = productsModel.createProduct({ name, quantity });
+    return newProduct;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const updateProduct = async ({ id, name, quantity }) => {

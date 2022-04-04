@@ -1,18 +1,3 @@
-// const Joi = require('joi'); // cancela por enquanto para facilitar as coisas
-
-// const productSchema = Joi.object({
-//   name: Joi.string().min(5).required(),
-//   quantity: Joi.number().min(1).required(),
-// });
-
-// const nameValidation = (req, res, next) => {
-//   const { name } = req.body;
-//   const { error } = productSchema.validate(name);
-//   if (name.length < 5) {
-//     return res.status(422).json({ message: '"name" length must be at least 5 characters long' });
-//   }}
-const productsModel = require('../models/productsModel');
-
 const nameValidation = (req, res, next) => {
   const { name } = req.body;
   if (!name) {
@@ -36,22 +21,22 @@ const quantityValidation = (req, res, next) => {
   return next();
 };
 
-const checkProduct = async (req, res, next) => {
-  const { name } = req.body;
-  const products = await productsModel.getAllProducts();
-  const finder = products.find((product) => product.name === name);
-  if (finder) return res.status(409).json({ message: 'Product already exists' });
-  // // try {
-  //   const product = await productService.getAll();
-  //   if (product) 
-  // // } catch (error) {
-  // //   console.error(error);    
-  // // }
-  return next();
-};
+// const checkProduct = async (req, res, next) => {
+//   const { name } = req.body;
+//   const products = await productsModel.getAllProducts();
+//   const finder = products.find((product) => product.name === name);
+//   if (finder) return res.status(409).json({ message: 'Product already exists' });
+//   // // try {
+//   //   const product = await productService.getAll();
+//   //   if (product) 
+//   // // } catch (error) {
+//   // //   console.error(error);    
+//   // // }
+//   return next();
+// };
 
 module.exports = {
   nameValidation,
   quantityValidation,
-  checkProduct,
+  // checkProduct,
 };

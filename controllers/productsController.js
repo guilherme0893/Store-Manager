@@ -1,4 +1,5 @@
 const productService = require('../services/productsServices');
+const productsModel = require('../models/productsModel');
 
 const getAllProducts = async (req, res) => {
   try {
@@ -29,23 +30,29 @@ const getProductsById = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-  const { name, quantity } = req.body;
-  const newProduct = await productService.createProduct({ name, quantity });
-  return res.status(201).json(newProduct);  
-  // if (product === undefined) {
-  // } 
-  // if (product === true) {
-  //   return res.status(409).json({ message: 'Product already exists' });
-  // }   
+  try {
+    const { name, quantity } = req.body;
+    const product = await productsModel.getUniqueProduct(name); // talvez puedesse passar nos midds
+    // não precisaria filtrar aqui porque isso tá no model
+    if (!product) {
+      const newProduct = await productService.createProduct({ name, quantity });
+      return res.status(201).json(newProduct);  
+    }
+    if (product) {
+      return res.status(409).json({ message: 'Product already exists' });
+    }    
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const updateProduct = async (req, res) => {
-  const { id } = req.params;
-  // console.log(id, 'id do update');
-  const { name, quantity } = req.body;
-  const product = await productService.getById(id);
-  if (!product) return res.status(404).json({ message: 'Product not found' });
   try {
+    const { id } = req.params;
+    // console.log(id, 'id do update');
+    const { name, quantity } = req.body;
+    const product = await productService.getById(id);
+    if (!product) return res.status(404).json({ message: 'Product not found' });
     // falta o await
     const updatedProduct = await productService.updateProduct({ id, name, quantity });
     return res.status(200).json(updatedProduct);
@@ -55,10 +62,10 @@ const updateProduct = async (req, res) => {
 };
 
 const deleteProduct = async (req, res) => {
-  const { id } = req.params;
-  const product = await productService.getById(id);
-  if (!product) return res.status(404).json({ message: 'Product not found' });
   try {
+    const { id } = req.params;
+    const product = await productService.getById(id);
+    if (!product) return res.status(404).json({ message: 'Product not found' });  
     await productService.deleteProduct(id);
     return res.status(204).end();
   } catch (error) {

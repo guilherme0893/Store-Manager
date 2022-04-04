@@ -12,7 +12,7 @@ router.get('/:id', productsController.getProductsById);
 router.post('/', 
   productsValidation.nameValidation, 
   productsValidation.quantityValidation,
-  productsValidation.checkProduct,
+  // productsValidation.checkProduct,
   productsController.createProduct);
 
 router.put('/:id', // update só no producto com o Id na url 
