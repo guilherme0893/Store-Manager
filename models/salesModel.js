@@ -63,10 +63,16 @@ const updateSale = async (saleId, sales) => {
   const query = `UPDATE sales_products SET product_id = ?, 
     quantity = ? WHERE sale_id = ? AND product_id = ?`;
   // de novo inserção de diferentes dados cria promises
-  const itemUpdated = await Promise.all(sales.map(async ({ productId, quantity }) => {
+  const itemUpdated = await Promise.all(sales.map(async ({ productId, quantity }) => { // já gera um array com objeto e duas chaves
     await connection.execute(query, [productId, quantity, saleId, productId]);
+    // console.log(newPromise, 'eu sou a newPromise'); // undefined
+    // console.log(newPromise.productId, 'eu sou o productId'); // também undefined
+    console.log(productId, 'eu sou o productId'); // retorna um valor
     return { productId, quantity };
   }));
+  // ambos tem valores definidos
+  // console.log(itemUpdated, 'eu sou o updated'); // bate com o array gerado pelo sql
+  // console.log(saleId, 'eu sou o saleId');
   return { saleId, itemUpdated };
 };
 

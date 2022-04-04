@@ -15,8 +15,9 @@ const createNewSale = async (sale) => {
   return newSale;
 };
 
-const updateSale = async (sale) => {
-  const updatedSale = await salesModel.updateSale(sale);
+const updateSale = async (saledId, sale) => { // saleId vai porque é put/:id então tera de achar a id da sale
+  const updatedSale = await salesModel.updateSale(saledId, sale);
+  // console.log(sale, 'sou sale no service'); // pega o array de request
   return updatedSale;
 };
 
