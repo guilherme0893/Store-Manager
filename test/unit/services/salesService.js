@@ -4,116 +4,154 @@ const salesService = require('../../../services/salesServices');
 const salesModel = require('../../../models/salesModel');
 
 describe('Tests salesService', () => {
+
   const fakeSaleList = [
-    {
-      "productId": 1,
-      "quantity": 3,
+      {
+        "saleId": 1,
+        "date": "2022-04-05T16:09:38.000Z",
+        "productId": 1,
+        "quantity": 5
     },
     {
-      "productId": 2,
-      "quantity": 5,
-    }
+        "saleId": 1,
+        "date": "2022-04-05T16:09:38.000Z",
+        "productId": 2,
+        "quantity": 10
+    },
+    {
+        "saleId": 2,
+        "date": "2022-04-05T16:09:38.000Z",
+        "productId": 3,
+        "quantity": 15
+    },
   ];
-  const fakeSale = {
-    id: 1,
-    quantity: 100,
-  };
+
   const newFakeSale = {
-    "productId": 2,
-    "quantity": 10,
+    "productId": 3,
+    "quantity": 20
   };
+
   const updatedSale = {
-    "productId": 2,
-    "quantity": 11,
-  };
-  const updatedFakeProductList = [
-    {
       "productId": 1,
-      "quantity": 3,
-    },
-    {
-      "productId": 2,
-      "quantity": 11,
-    },
-  ];
-  
-    describe('When getAll is called,', () => {
-    before(() => {
-      sinon.stub(salesModel, 'getAllSales').resolves(fakeSaleList);
+      "quantity": 6
+  };
+
+  const fakeProductToBeDeleted = {
+    "saleId": 1,
+    "date": "2022-04-05T16:09:38.000Z",
+    "productId": 3,
+    "quantity": 15
+  };
+
+  describe('When getAll is called,', () => {
+
+    describe('if it is successful', () => {
+
+      before(() => {
+        sinon.stub(salesModel, 'getAllSales').resolves(fakeSaleList);
+      });
+      after(() => salesModel.getAllSales.restore());
+
+      it('lists all products in an object', async () => {
+        const sales = await salesService.getAll();
+        expect(typeof sales).to.be.equal('object');
+        expect(sales).to.be.equal(fakeSaleList);
+      });
+      it('it has length equal or higher than one', async () => {
+        const sales = await salesService.getAll();
+        expect(sales.length).to.be.greaterThanOrEqual(1);
+      });
     });
-    after(() => salesModel.getAllSales.restore());
-    it('if successful, it lists all sales in an array of objects', async () => {
-      const sales = await salesService.getAll();
-      // console.log(products[0]); // object
-      expect(typeof sales).to.be.equal('object');
-      expect(sales).to.be.equal(fakeSaleList);
+
+    describe('if it fails', () => {
+
+      before(() => {
+        sinon.stub(salesModel, 'getAllSales').resolves();
+      });
+      after(() => salesModel.getAllSales.restore());
+
+      it('undefined is returned', async () => {
+        const sales = await salesService.getAll();
+        expect(sales).to.be.equal(undefined);
+      });
     });
   });
 
   describe('When getById is called,', () => {
-    before(() => {
-      sinon.stub(salesModel, 'getSalesById').resolves([fakeSaleList[0]]);
+
+    describe('if it is successful,', () => {
+
+      before(() => {
+        sinon.stub(salesModel, 'getSalesById').resolves(fakeSaleList);
+      });
+      after(() => {
+        salesModel.getSalesById.restore();
+      });
+
+      it('it lists all sales matching the id in the parameter in an object', async () => {
+        const sale = await salesService.getById(1);
+        expect(sale).to.be.an('array');
+      });
+
+      it('it has length equal or higher than one', async () => {
+        const sale = await salesService.getById(1);
+        // console.log(sale);
+        expect(sale.length).to.be.greaterThanOrEqual(1);
+      });
     });
-    after(() => {
-      salesModel.getSalesById.restore();
-    });
-    it('if successful, it lists one sale matching the id in the parameter', async () => {
-      const sale = await salesService.getById(1);
-      // console.log(product);
-      // console.log(fakeProductList[0]);
-      // console.log(product === fakeProductList[0]);
-      expect(sale).to.be.deep.equal([fakeSaleList[0]])
+
+  });
+  
+  describe('When createProduct is called', () => {
+
+    describe('if it is successful', () => {
+
+      before(() => {
+        sinon.stub(salesModel, 'getAllSales').resolves([fakeSaleList]);
+        sinon.stub(salesModel, 'createNewSale').resolves({ id: 1, itemsSold: newFakeSale });
+      });
+      after(() => {
+        salesModel.getAllSales.restore();
+        salesModel.createNewSale.restore();
+      });
+
+      it('a new product is added', async () => {
+        const newSale = await salesModel.createNewSale(newFakeSale);
+        // console.log(newSale);
+        expect(newSale).to.be.deep.equal({ id: 1, itemsSold: newFakeSale });
+      });
     });
   });
 
-  // describe('When createProduct is called', () => {
-  //   // before(() => {
-  //   //   sinon.stub(productsModel, 'getUniqueProduct').resolves(false);
-  //   //   sinon.stub(productsModel, 'createProduct').resolves(newFakeProduct);
-  //   //   sinon.stub(productsModel, 'getAllProducts').resolves(fakeProductList);
-  //   // });
-  //   // after(() => {
-  //   //   productsModel.getUniqueProduct.restore();
-  //   //   productsModel.createProduct.restore();
-  //   //   productsModel.getAllProducts.restore();
-  //   // });
-  //   it('if successful, a new product is added', async () => {
-  //     const newSales = await salesService.createNewSale(newFakeSale);
-  //     // console.log(newProducts);
-  //     const getUnique = await salesModel.getSalesById(newFakeSale.productId);
-  //     // console.log(getUnique);
-  //     const getAllSales = await salesService.getAll(fakeSaleList);
-  //     // console.log(getAllProducts);
-  //     expect(newSales.productId).to.be.equal(2);
-  //     expect(newSales.quantity).to.be.equal(10);
-  //   });
-  // });
+  describe('When updateProduct is called', () => {
 
-  // describe('When updateProduct is called', () => {
-  //   // before(() => {
-  //   //   sinon.stub(salesModel, 'updateSale').resolves(updateSale);
-  //   // });
-  //   // after(() => {
-  //   //   productsModel.updateProduct.restore();
-  //   // });
-  //   it('if successful, a sale is updated', async () => {
-  //     const updateSale = await salesService.updateSale(updatedSale);
-  //     // console.log(updateProduct);
-  //     // console.log(updatedFakeProductList);
-  //     expect(updatedFakeProductList.includes(updateSale));
-  //   });
-  // });
+    describe('if it is successful', () => {
+      before(() => {
+        sinon.stub(salesModel, 'updateSale').resolves({ saleId: 1, itemUpdated: updatedSale });
+      });
+      after(() => {
+        salesModel.updateSale.restore();
+      });
+
+      it('a sale is updated', async () => {
+        // no salesService recebe dois parametros --> id & sale
+        const updateSale = await salesService.updateSale(1, updatedSale);
+        expect(updateSale).to.be.an('object');
+        expect(updateSale).to.be.deep.equal({ saleId: 1, itemUpdated: updatedSale })
+      });
+    })
+  });
 
   describe('When deleteProduct is called', () => { 
     before(() => {
-      sinon.stub(salesModel, 'deleteSale').resolves(fakeSaleList);
+      sinon.stub(salesModel, 'deleteSale').resolves();
     });
     after(() => {
       salesModel.deleteSale.restore();
     });
     it('if successful, a sale is removed based on the given id', async () => {
       const removedSale = await salesModel.deleteSale(1);
-      expect(fakeSaleList).not.to.include(removedSale);
+      expect(removedSale).to.be.an('undefined');
     });
   });
 });
