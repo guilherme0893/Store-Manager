@@ -54,14 +54,14 @@ describe('Tests productService', () => {
     describe('if it is successful', () => {
 
       before(() => {
-        sinon.stub(productsModel, 'getAllProducts').resolves(fakeProductList);
+        sinon.stub(productsModel, 'getAllProducts').resolves([fakeProductList]);
       });
       after(() => {
         productsModel.getAllProducts.restore();
       });
 
       it('if successful, it lists all products in an array of objects', async () => {
-        const products = await productsService.getAll();
+        const [products] = await productsService.getAll();
         expect(typeof products).to.be.equal('object');
         expect(products).to.be.equal(fakeProductList);
       });
