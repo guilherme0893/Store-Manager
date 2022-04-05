@@ -41,7 +41,7 @@ describe('Tests salesService', () => {
     before(() => {
       sinon.stub(salesModel, 'getAllSales').resolves(fakeSaleList);
     });
-    // after(() => salesModel.getAllSales.restore());
+    after(() => salesModel.getAllSales.restore());
     it('if successful, it lists all sales in an array of objects', async () => {
       const sales = await salesService.getAll();
       // console.log(products[0]); // object
@@ -54,9 +54,9 @@ describe('Tests salesService', () => {
     before(() => {
       sinon.stub(salesModel, 'getSalesById').resolves([fakeSaleList[0]]);
     });
-    // after(() => {
-    //   salesModel.getProductsById.restore();
-    // });
+    after(() => {
+      salesModel.getSalesById.restore();
+    });
     it('if successful, it lists one sale matching the id in the parameter', async () => {
       const sale = await salesService.getById(1);
       // console.log(product);
@@ -104,16 +104,16 @@ describe('Tests salesService', () => {
   //   });
   // });
 
-  // describe('When deleteProduct is called', () => {  // NAO IMPLEMENTADO AINDA!!!!
-  //   before(() => {
-  //     sinon.stub(salesModel, 'deleteSale').resolves(fakeSaleList);
-  //   });
-  //   // after(() => {
-  //   //   productsModel.deleteProduct.restore();
-  //   // });
-  //   it('if successful, a sale is removed based on the given id', async () => {
-  //     const removedSale = await productsModel.deleteProduct(1);
-  //     expect(fakeSaleList).not.to.include(removedSale);
-  //   });
-  // });
+  describe('When deleteProduct is called', () => { 
+    before(() => {
+      sinon.stub(salesModel, 'deleteSale').resolves(fakeSaleList);
+    });
+    after(() => {
+      salesModel.deleteSale.restore();
+    });
+    it('if successful, a sale is removed based on the given id', async () => {
+      const removedSale = await salesModel.deleteSale(1);
+      expect(fakeSaleList).not.to.include(removedSale);
+    });
+  });
 });

@@ -45,20 +45,22 @@ describe('Tests productModel', () => {
   };
   
   describe('Get all products from the database', () => {
-    before(() => {
+    before(async () => {
       // no model o array é desestruturado!!
       sinon.stub(connection, 'execute').resolves([fakeProductList]);
     });
     after(() => {
       connection.execute.restore();
     });
-    it('if successful, returns all products from database', async () => {
+    it('if successful, returns all products from database as an array', async () => {
       const products = await productsModel.getAllProducts();
       // console.log(products);
       // console.log(fakeProductList);
       // console.log(products === fakeProduct);
-      expect(products).to.equal(fakeProductList);
+      expect(products).to.be.an('array');
+      // expect(products).to.be.an('array');
     });
+    
   });
 
   describe('Get an specific product from the database,', () => {
@@ -72,6 +74,19 @@ describe('Tests productModel', () => {
       const product = await productsModel.getProductsById(1);
       // console.log(product[0]);
       expect(product[0]).to.be.equal(fakeProductList[0]);
+    });
+  });
+
+  describe('Get an specific product from the database fails', () => {
+    before(async () => {
+      sinon.stub(connection, 'execute').resolves([]);
+    });
+    after(() => {
+      connection.execute.restore();
+    });
+    it('if id is not found, returns undefined', async () => {
+      const products = await productsModel.getProductsById(100);
+      expect(products).to.be.undefined;
     });
   });
 
