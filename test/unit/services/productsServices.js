@@ -4,6 +4,7 @@ const productsService = require('../../../services/productsServices');
 const productsModel = require('../../../models/productsModel');
 
 describe('Tests productService', () => {
+
   const fakeProductList = [
     {
       id: 1,
@@ -16,16 +17,19 @@ describe('Tests productService', () => {
       quantity: 3,
     },
   ];
+
   const fakeProduct = {
     id: 1,
     name: 'Batman Belt',
     quantity: 10,
   };
+
   const updatedProduct = {
     id: 1,
     name: 'Batman Belt',
     quantity: 9,
   };
+
   const updatedFakeProductList = [
     {
       id: 1,
@@ -38,6 +42,7 @@ describe('Tests productService', () => {
       quantity: 3,
     },
   ];
+
   const newFakeProduct = {
     id: 10,
     name: 'Batman Mask',
@@ -45,84 +50,120 @@ describe('Tests productService', () => {
   };
 
   describe('When getAll is called,', () => {
-    before(() => {
-      sinon.stub(productsModel, 'getAllProducts').resolves(fakeProductList);
+
+    describe('if it is successful', () => {
+
+      before(() => {
+        sinon.stub(productsModel, 'getAllProducts').resolves(fakeProductList);
+      });
+      after(() => {
+        productsModel.getAllProducts.restore();
+      });
+
+      it('if successful, it lists all products in an array of objects', async () => {
+        const products = await productsService.getAll();
+        expect(typeof products).to.be.equal('object');
+        expect(products).to.be.equal(fakeProductList);
+      });
+      it('it has length equal or higher than one', async () => {
+        const products = await productsService.getAll();
+        expect(products.length).to.be.greaterThanOrEqual(1);
+      });
     });
-    after(() => {
-      productsModel.getAllProducts.restore();
-    });
-    it('if successful, it lists all products in an array of objects', async () => {
-      const products = await productsService.getAll();
-      // console.log(products[0]); // object
-      expect(typeof products).to.be.equal('object');
-      expect(products).to.be.equal(fakeProductList);
-    });
+
+    describe('if it fails', () => {
+      before(() => {
+        sinon.stub(productsModel, 'getAllProducts').resolves();
+      });
+      after(() => {
+        productsModel.getAllProducts.restore();
+      });
+
+      it('undefined is returned', async () => {
+        const products = await productsService.getAll();
+        expect(products).to.be.equal(undefined);
+      })
+    })
   });
 
   describe('When getById is called,', () => {
-    before(() => {
-      sinon.stub(productsModel, 'getProductsById').resolves(fakeProductList);
-    });
-    after(() => {
-      productsModel.getProductsById.restore();
-    });
-    it('if successful, it lists one product matching the id in the parameter', async () => {
-      const product = await productsService.getById(1);
-      // console.log(product);
-      // console.log(fakeProductList[0]);
-      // console.log(product === fakeProductList[0]);
-      expect(product).to.be.deep.equal(fakeProduct)
+
+    describe('if successful,', () => {
+
+      before(() => {
+        sinon.stub(productsModel, 'getProductsById').resolves(fakeProductList);
+      });
+      after(() => {
+        productsModel.getProductsById.restore();
+      });
+
+      it('it lists one product matching the id in the parameter', async () => {
+        const product = await productsService.getById(1);
+        // console.log(product);
+        expect(product).to.be.an('object');
+        expect(product).to.be.deep.equal(fakeProduct)
+      });
+
+    // LOGICA INVALIDADA PORQUE ACIMA É UM OBJECT
+    //   it('it has length equal to one', async () => {
+    //     const product = await productsService.getById(1);
+    //     console.log(product.length);
+    //     expect(product.length).to.be.greaterThanOrEqual(1);
+    //   });
     });
   });
 
   describe('When createProduct is called', () => {
-    before(() => {
-      sinon.stub(productsModel, 'getUniqueProduct').resolves(false);
-      sinon.stub(productsModel, 'createProduct').resolves(newFakeProduct);
-      sinon.stub(productsModel, 'getAllProducts').resolves(fakeProductList);
-    });
-    after(() => {
-      productsModel.getUniqueProduct.restore();
-      productsModel.createProduct.restore();
-      productsModel.getAllProducts.restore();
-    });
-    it('if successful, a new product is added', async () => {
-      const newProducts = await productsService.createProduct(newFakeProduct);
-      // console.log(newProducts);
-      const getUnique = await productsModel.getUniqueProduct(newFakeProduct.name);
-      // console.log(getUnique);
-      const getAllProducts = await productsService.getAll(fakeProductList);
-      // console.log(getAllProducts);
-      expect(newProducts.name).to.be.equal('Batman Mask');
-      expect(newProducts.quantity).to.be.equal(1);
+
+    describe('if it is successful,', () => {
+      before(() => {
+        sinon.stub(productsModel, 'getAllProducts').resolves([fakeProductList]);
+        sinon.stub(productsModel, 'createProduct').resolves(newFakeProduct);
+        sinon.stub(productsModel, 'getUniqueProduct').resolves(false);
+      });
+      after(() => {
+        productsModel.getAllProducts.restore();
+        productsModel.createProduct.restore();
+        productsModel.getUniqueProduct.restore();
+      });
+
+      it('a new product is added,', async () => {
+        const newProducts = await productsService.createProduct(newFakeProduct);
+        expect(newProducts).to.be.deep.equal(newFakeProduct);
+        expect(newProducts.name).to.be.equal('Batman Mask');
+        expect(newProducts.quantity).to.be.equal(1);
+      });
     });
   });
 
   describe('When updateProduct is called', () => {
-    before(() => {
-      sinon.stub(productsModel, 'updateProduct').resolves(updatedProduct);
+
+    describe('if it is successful,', () => {
+      before(() => {
+        sinon.stub(productsModel, 'updateProduct').resolves(updatedProduct);
+      });
+      after(() => {
+        productsModel.updateProduct.restore();
+      });
     });
-    after(() => {
-      productsModel.updateProduct.restore();
-    });
-    it('if successful, a product is updated', async () => {
+
+    it('a product is updated', async () => {
       const updateProduct = await productsService.updateProduct(updatedProduct);
-      // console.log(updateProduct);
-      // console.log(updatedFakeProductList);
       expect(updatedFakeProductList.includes(updateProduct));
     });
   });
 
   describe('When deleteProduct is called', () => {
     before(() => {
-      sinon.stub(productsModel, 'deleteProduct').resolves(fakeProductList);
+      sinon.stub(productsModel, 'deleteProduct').resolves();
     });
     after(() => {
       productsModel.deleteProduct.restore();
     });
     it('if successful, a product is removed based on the given id', async () => {
       const removedProduct = await productsModel.deleteProduct(1);
-      expect(fakeProductList).not.to.include(removedProduct);
+      // console.log(removedProduct);
+      expect(removedProduct).to.be.an('undefined');
     });
   });
 });

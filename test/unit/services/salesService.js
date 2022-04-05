@@ -7,40 +7,34 @@ describe('Tests salesService', () => {
 
   const fakeSaleList = [
       {
-        "saleId": 1,
-        "date": "2022-04-05T16:09:38.000Z",
-        "productId": 1,
-        "quantity": 5
+        saleId: 1,
+        date: '2022-04-05T16:09:38.000Z',
+        productId: 1,
+        quantity: 5
     },
     {
-        "saleId": 1,
-        "date": "2022-04-05T16:09:38.000Z",
-        "productId": 2,
-        "quantity": 10
-    },
-    {
-        "saleId": 2,
-        "date": "2022-04-05T16:09:38.000Z",
-        "productId": 3,
-        "quantity": 15
+        saleId: 2,
+        date: '2022-04-05T16:09:38.000Z',
+        productId: 3,
+        quantity: 15
     },
   ];
 
   const newFakeSale = {
-    "productId": 3,
-    "quantity": 20
+    productId: 3,
+    quantity: 20
   };
 
   const updatedSale = {
-      "productId": 1,
-      "quantity": 6
+      productId: 1,
+      quantity: 6
   };
 
   const fakeProductToBeDeleted = {
-    "saleId": 1,
-    "date": "2022-04-05T16:09:38.000Z",
-    "productId": 3,
-    "quantity": 15
+    saleId: 1,
+    date: '2022-04-05T16:09:38.000Z',
+    productId: 3,
+    quantity: 15
   };
 
   describe('When getAll is called,', () => {
@@ -82,27 +76,30 @@ describe('Tests salesService', () => {
     describe('if it is successful,', () => {
 
       before(() => {
-        sinon.stub(salesModel, 'getSalesById').resolves(fakeSaleList);
+        sinon.stub(salesModel, 'getSalesById').resolves(fakeSaleList[0]);
       });
       after(() => {
         salesModel.getSalesById.restore();
       });
 
       it('it lists all sales matching the id in the parameter in an object', async () => {
-        const sale = await salesService.getById(1);
-        expect(sale).to.be.an('array');
-      });
-
-      it('it has length equal or higher than one', async () => {
-        const sale = await salesService.getById(1);
+        const id = 1;
+        const sale = await salesService.getById(id);
         // console.log(sale);
-        expect(sale.length).to.be.greaterThanOrEqual(1);
+        expect(sale).to.be.an('object');
       });
-    });
 
+      // LOGICA INVALIDADA PORQUE ACIMA É UM OBJECT
+      // it('it has length equal or higher than one', async () => {
+      //   const id = 1;
+      //   const sale = await salesService.getById(id);
+      //   console.log(sale);
+      //   expect(sale.length).to.be.greaterThanOrEqual(1);
+      // });
+    });
   });
   
-  describe('When createProduct is called', () => {
+  describe('When createNewSale is called', () => {
 
     describe('if it is successful', () => {
 
@@ -123,7 +120,7 @@ describe('Tests salesService', () => {
     });
   });
 
-  describe('When updateProduct is called', () => {
+  describe('When updateSale is called', () => {
 
     describe('if it is successful', () => {
       before(() => {
@@ -142,7 +139,7 @@ describe('Tests salesService', () => {
     })
   });
 
-  describe('When deleteProduct is called', () => { 
+  describe('When deleteSale is called', () => { 
     before(() => {
       sinon.stub(salesModel, 'deleteSale').resolves();
     });
