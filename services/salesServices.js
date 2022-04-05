@@ -21,9 +21,12 @@ const updateSale = async (saledId, sale) => { // saleId vai porque é put/:id en
   return updatedSale;
 };
 
+const deleteSale = async (id) => salesModel.deleteSale(id);
+
 module.exports = {
   getAll,
   getById,
   createNewSale,
   updateSale,
+  deleteSale,
 };
