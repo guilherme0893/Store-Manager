@@ -44,10 +44,9 @@ describe('Test productControllers', () => {
     quantity: 1,
   };
 
-  const response = {};
-  const request = {};
-
   describe('returns all products', () => {
+    const response = {};
+    const request = {};
     before(() => {
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
@@ -62,6 +61,8 @@ describe('Test productControllers', () => {
   });
 
   describe('return a specific product', () => {
+    const response = {};
+    const request = {};
     before(() => {
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
@@ -78,17 +79,18 @@ describe('Test productControllers', () => {
   });
 
   // describe('a newProduct is added in the database', () => {
-  //   before(() => {
-  //     response.status = sinon.stub().returns(response);
-  //     response.json = sinon.stub().returns();
-  //   });
   //   it('is successful if a new product is inserted in the database', async () => {
+  //     const response = {};
+  //     const request = {};
+  //     before(() => {
+  //       response.status = sinon.stub().returns(response);
+  //       response.json = sinon.stub().returns();
+  //     });
+  //     after(() => productService.createProduct.restore());
   //     request.body = { name: 'Batman Belt', quantity: 10}
   //     sinon.stub(productService, 'createProduct').resolves([fakeProduct]);
-  //     await productsController.createProduct(request, response);
-  //     expect(response.status.calledWith(201)).to.be.true;
-  //     expect(response.json.calledWith(fakeProduct)).to.be.true;
-  //     productService.createProduct.restore();
+  //     const newProduct = await productsController.createProduct(request, response);
+  //     expect(newProduct).to.be.true;
   //   });
   // });
-})
+});

@@ -88,4 +88,18 @@ describe('Tests productModel', () => {
       expect(newProduct.id).to.be.equal(1);
     });
   });
+
+  describe('Update a product in the database', () => {
+    before(() => {
+      sinon.stub(connection, 'execute').resolves({ id: 1,name: 'Batman Belt', quantity: 9,});
+    });
+    after(() => connection.execute.restore());
+    it('if successful, a product is updated in the database', async () => {
+      const product = await productsModel.updateProduct({ id: 1,name: 'Batman Belt', quantity: 9,});
+      // console.log(product);
+      // console.log(updatedProduct);
+      expect(product).to.deep.equal(updatedProduct);
+      expect(typeof product).to.be.an.equal('object');
+    })
+  })
 });
