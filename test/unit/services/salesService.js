@@ -39,36 +39,36 @@ describe('Tests salesService', () => {
 
   describe('When getAll is called,', () => {
 
-    describe('if it is successful', () => {
+  //   describe('if it is successful', () => {
 
-      before(() => {
-        sinon.stub(salesModel, 'getAllSales').resolves(fakeSaleList);
-      });
-      after(() => salesModel.getAllSales.restore());
+  //     before(() => {
+  //       sinon.stub(salesModel, 'getAllSales').resolves([fakeSaleList]);
+  //     });
+  //     after(() => salesModel.getAllSales.restore());
 
-      it('lists all products in an object', async () => {
-        const sales = await salesService.getAll();
-        expect(typeof sales).to.be.equal('object');
-        expect(sales).to.be.equal(fakeSaleList);
-      });
-      it('it has length equal or higher than one', async () => {
-        const sales = await salesService.getAll();
-        expect(sales.length).to.be.greaterThanOrEqual(1);
-      });
-    });
+  //     it('lists all products in an object', async () => {
+  //       const sales = await salesService.getAll();
+  //       expect(typeof sales).to.be.equal('object');
+  //       expect(sales).to.be.equal(fakeSaleList);
+  //     });
+  //     it('it has length equal or higher than one', async () => {
+  //       const sales = await salesService.getAll();
+  //       expect(sales.length).to.be.greaterThanOrEqual(1);
+  //     });
+  //   });
 
-    describe('if it fails', () => {
+  //   describe('if it fails', () => {
 
-      before(() => {
-        sinon.stub(salesModel, 'getAllSales').resolves();
-      });
-      after(() => salesModel.getAllSales.restore());
+  //     before(() => {
+  //       sinon.stub(salesModel, 'getAllSales').resolves();
+  //     });
+  //     after(() => salesModel.getAllSales.restore());
 
-      it('undefined is returned', async () => {
-        const sales = await salesService.getAll();
-        expect(sales).to.be.equal(undefined);
-      });
-    });
+  //     it('undefined is returned', async () => {
+  //       const sales = await salesService.getAll();
+  //       expect(sales).to.be.equal(undefined);
+  //     });
+  //   });
   });
 
   describe('When getById is called,', () => {
@@ -83,10 +83,9 @@ describe('Tests salesService', () => {
       });
 
       it('it lists all sales matching the id in the parameter in an object', async () => {
-        const id = 1;
-        const sale = await salesService.getById(id);
+        const sale = await salesService.getById(1);
         // console.log(sale);
-        expect(sale).to.be.an('object');
+        expect(sale).to.be.true;
       });
 
       // LOGICA INVALIDADA PORQUE ACIMA É UM OBJECT

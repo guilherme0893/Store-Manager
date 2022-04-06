@@ -86,32 +86,32 @@ describe('Tests productService', () => {
     })
   });
 
-  describe('When getById is called,', () => {
+  // describe('When getById is called,', () => {
 
-    describe('if successful,', () => {
+  //   describe('if successful,', () => {
 
-      before(() => {
-        sinon.stub(productsModel, 'getProductsById').resolves(fakeProductList);
-      });
-      after(() => {
-        productsModel.getProductsById.restore();
-      });
+  //     before(() => {
+  //       sinon.stub(productsModel, 'getProductsById').resolves(fakeProductList);
+  //     });
+  //     after(() => {
+  //       productsModel.getProductsById.restore();
+  //     });
 
-      it('it lists one product matching the id in the parameter', async () => {
-        const product = await productsService.getById(1);
-        // console.log(product);
-        expect(product).to.be.an('object');
-        expect(product).to.be.deep.equal(fakeProduct)
-      });
+  //     it('it lists one product matching the id in the parameter', async () => {
+  //       const product = await productsService.getById(1);
+  //       // console.log(product);
+  //       expect(product).to.be.an('object');
+  //       expect(product).to.be.deep.equal(fakeProduct)
+  //     });
 
-    // LOGICA INVALIDADA PORQUE ACIMA É UM OBJECT
-    //   it('it has length equal to one', async () => {
-    //     const product = await productsService.getById(1);
-    //     console.log(product.length);
-    //     expect(product.length).to.be.greaterThanOrEqual(1);
-    //   });
-    });
-  });
+  //   // LOGICA INVALIDADA PORQUE ACIMA É UM OBJECT
+  //   //   it('it has length equal to one', async () => {
+  //   //     const product = await productsService.getById(1);
+  //   //     console.log(product.length);
+  //   //     expect(product.length).to.be.greaterThanOrEqual(1);
+  //   //   });
+  //   });
+  // });
 
   describe('When createProduct is called', () => {
 
