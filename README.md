@@ -1,6 +1,6 @@
 # Introduction
 
-This application was created during Trybe Back-end Module. It is a REST API developed with NodeJS, Express and Nodemon, in order to manager a store with products and sales. For the data manipulation, a MySQL database was used.
+This application was created during Trybe Back-end Module. It is a REST API developed with NodeJS, Express and Nodemon, in order to manager a store with products and sales. For the data manipulation, a MySQL database was used. Also for this project testing using Chai and Sinnon.
 
 # Exploring the application
 
@@ -13,3 +13,7 @@ This application was created during Trybe Back-end Module. It is a REST API deve
 4) To run the project just type <code>npm start</code>
 
 5) Have fun 
+
+# Updates
+
+This project will receive updates as some tasks provided by Trybe are still incomplete and, let's be honest, it is always possible to do better. See you!
