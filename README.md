@@ -1,6 +1,6 @@
 # Introduction
 
-This application was created during Trybe Back-end Module. It is a REST API developed with NodeJS, Express and Nodemon, in order to manager a store with products and sales. For the data manipulation, a MySQL database was used. Also for this project testing using Chai and Sinnon.
+This application was created during Trybe Back-end Module. It is an API using the MSC architecture developed with NodeJS, Express and Nodemon, in order to manager a store with products and sales. For the data manipulation, a MySQL database was used. Also for this project testing using Chai and Sinnon.
 
 # Exploring the application
 
