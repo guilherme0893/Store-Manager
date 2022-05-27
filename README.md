@@ -4,7 +4,7 @@ This application was created during Trybe Back-end Module. It is a REST API deve
 
 # Exploring the application
 
-1) First of all clone the repository via <code> it clone </code>
+1) First of all clone the repository via <code> git clone </code>
 
 2) Then install the dependencies, if they exist via <code>npm install</code>
 
