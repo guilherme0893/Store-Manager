@@ -2,7 +2,6 @@ const productsController = require('../../../controllers/productsController');
 const productService = require('../../../services/productsServices');
 const { expect } = require('chai');
 const sinon = require('sinon');
-// teste
 
 describe('Test productControllers', () => {
   const fakeProductList = [
