@@ -4,6 +4,7 @@ const mysql = require("mysql2/promise");
 const Importer = require("mysql-import");
 
 describe("10-deleteSales", () => {
+  jest.setTimeout(9000)
   const url = `http://localhost:${process.env.PORT}`;
   const INVALID_ID = 99999;
   let connection;

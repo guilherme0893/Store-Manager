@@ -2,6 +2,7 @@ const productsController = require('../../../controllers/productsController');
 const productService = require('../../../services/productsServices');
 const { expect } = require('chai');
 const sinon = require('sinon');
+// teste
 
 describe('Test productControllers', () => {
   const fakeProductList = [
@@ -122,10 +123,10 @@ describe('Test productControllers', () => {
   //       response.json = sinon.stub().returns();
   //     });
   //     after(() => productService.createProduct.restore());
-  //     request.body = { name: 'Batman Belt', quantity: 10}
-  //     sinon.stub(productService, 'createProduct').resolves([fakeProduct]);
-  //     const newProduct = await productsController.createProduct(request, response);
-  //     expect(newProduct).to.be.true;
+  //     // request.body = { name: 'Batman Belt', quantity: 10}
+  //     sinon.stub(productService, 'createProduct').resolves(newFakeProduct);
+  //     await productsController.createProduct(request, response);
+  //     expect(response.json.calledWith(newFakeProduct)).to.be.true;
   //   });
   // });
 });
