@@ -11,7 +11,6 @@ const nameValidation = (req, res, next) => {
 
 const quantityValidation = (req, res, next) => {
   const { quantity } = req.body;
-  console.log(quantity, 'sou a quantidade');
   if (!quantity && quantity !== 0) {
     return res.status(400).json({ message: '"quantity" is required' });
   }
